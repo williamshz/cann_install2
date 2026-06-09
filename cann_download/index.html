@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CANN - 昇腾AI异构计算架构 | 下载安装</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 页面头部 -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="logo">
+                    <div class="logo-icon">C</div>
+                    <span>CANN</span>
+                </div>
+                <!-- CANN版本下拉选择 -->
+                <div class="version-dropdown">
+                    <button class="dropdown-toggle">
+                        <span class="selected-version">8.0.RC3 LTS</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <button class="dropdown-item eol active" data-version="8.5.rc2">8.5.RC2 <span class="item-label">EOL</span></button>
+                    <button class="dropdown-item lts" data-version="8.0.rc3">8.0.RC3 <span class="item-label">LTS</span></button>
+                    <button class="dropdown-item latest" data-version="9.0.0">9.0.0 <span class="item-label">最新</span></button>
+                    <button class="dropdown-item beta" data-version="9.1.0-beta">9.1.0-beta.1 <span class="item-label">Beta</span></button>
+                    </div>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="#download" class="nav-link active" data-page="download">下载安装</a>
+                <a href="#docs" class="nav-link" data-page="docs">安装文档</a>
+                <a href="#hub" class="nav-link" data-page="hub">镜像中心</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-container">
+        <!-- 下载安装页面 -->
+        <div id="download-page" class="page-section active">
+            <!-- 页面标题 -->
+            <div class="page-title">
+            <h1>CANN快速安装</h1>
+            <p>CANN快速安装提供最新特性的CANN社区版本，供开发者提前下载使用。若您期望使用商用标准的CANN版本，请点击<a href="#" class="commercial-link">商用版</a>获取。</p>
+        </div>
+
+        <!-- 智能环境检测卡片 -->
+        <section class="detection-card">
+            <div class="detection-left">
+                <span class="detection-icon">🔍</span>
+                <span class="detection-title">智能环境检测</span>
+                <span class="detection-info">检测到您的设备可能是 <span class="highlight">ARM 架构</span>（如香橙派/RK开发板），系统将自动推荐兼容的 CANN 版本和安装方式</span>
+            </div>
+            <div class="detection-actions">
+                <button class="btn-primary" onclick="applyRecommended()">应用推荐配置</button>
+            </div>
+        </section>
+
+        <!-- 配置选择 -->
+        <section class="version-section">
+            <!-- 产品系列选择 -->
+            <div class="select-group">
+                <label class="select-label">产品系列</label>
+                <div class="select-options">
+                    <button class="select-option active" data-product="ascend310">Ascend 310</button>
+                    <button class="select-option" data-product="ascend310p">Ascend 310P</button>
+                    <button class="select-option" data-product="ascend910">Ascend 910</button>
+                    <button class="select-option" data-product="ascend910b">Ascend 910B</button>
+                    <button class="select-option" data-product="ascend710">Ascend 710</button>
+                </div>
+            </div>
+
+            <!-- CPU架构选择 -->
+            <div class="select-group">
+                <label class="select-label">CPU架构</label>
+                <div class="select-options">
+                    <button class="select-option active" data-arch="aarch64">ARM (aarch64)</button>
+                    <button class="select-option" data-arch="x86_64">x86_64</button>
+                </div>
+            </div>
+
+            <!-- 操作系统选择 -->
+            <div class="select-group">
+                <label class="select-label">操作系统</label>
+                <div class="select-options">
+                    <button class="select-option active" data-os="centos">CentOS</button>
+                    <button class="select-option" data-os="ubuntu">Ubuntu</button>
+                    <button class="select-option" data-os="euler">openEuler</button>
+                    <button class="select-option" data-os="debian">Debian</button>
+                </div>
+            </div>
+
+            <!-- 操作系统版本选择 -->
+            <div class="select-group" id="os-version-group">
+                <label class="select-label">操作系统版本</label>
+                <div class="select-options" id="os-version-options">
+                    <button class="select-option active" data-version="7">CentOS 7.x</button>
+                    <button class="select-option" data-version="8">CentOS 8.x</button>
+                </div>
+            </div>
+
+            <!-- 安装方式选择 -->
+            <div class="select-group">
+                <label class="select-label">安装方式</label>
+                <div class="select-options">
+                    <button class="select-option active install-method" data-method="yum">在线安装（Yum）</button>
+                    <button class="select-option install-method" data-method="conda">在线安装（Conda）</button>
+                    <button class="select-option install-method" data-method="offline">离线安装（Runfile）</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 安装指南 -->
+        <section class="guide-section">
+            <div class="guide-header">
+                <h3 class="section-title">安装指南</h3>
+            </div>
+
+            <!-- 安装指南内容（根据安装方式动态显示） -->
+            <div class="guide-content" id="yum-guide">
+                <!-- 环境要求 -->
+                <div class="requirement-card">
+                    <span class="requirement-icon">📋</span>
+                    <div class="requirement-info">
+                        <span class="requirement-label">环境要求</span>
+                        <p class="requirement-desc">适用于 CentOS 7+/8+ / openEuler 20.03+/22.03+，需 root 或 sudo 权限</p>
+                    </div>
+                </div>
+
+                <!-- 安装步骤 -->
+                <div class="steps-container">
+                    <!-- 步骤1：安装shadow工具包 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">安装 shadow 工具包</span>
+                            <span class="step-badge new">新增步骤</span>
+                        </div>
+                        <p class="step-desc">部分最小化安装的系统缺少 groupadd 等用户管理命令，需先安装 shadow 包。</p>
+                        <div class="code-block">
+                            <code class="code-text"># 安装 shadow 工具包 (提供 groupadd / useradd 等命令)
+sudo yum install -y shadow-utils</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤2：配置用户属组 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">配置用户属组</span>
+                        </div>
+                        <p class="step-desc">安装 CANN 前需创建运行所需的用户和用户组</p>
+                        <div class="code-block">
+                            <code class="code-text"># 创建用户组
+sudo groupadd HwHiAiUser
+
+# 创建用户并加入用户组
+sudo useradd -g HwHiAiUser -d /home/HwHiAiUser -m HwHiAiUser
+
+# 设置用户密码
+sudo passwd HwHiAiUser</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤3：安装依赖&配源 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">安装依赖&配源</span>
+                        </div>
+                        <p class="step-desc">安装所需依赖包并配置 CANN 官方软件源</p>
+                        <div class="code-block">
+                            <code class="code-text"># 安装依赖包
+sudo yum install -y wget curl openssl-devel bzip2-devel libffi-devel
+
+# 配置 CANN Yum 源
+sudo tee /etc/yum.repos.d/ascend.repo << EOF
+[ascend]
+name=Ascend Repository
+baseurl=https://repo.huawei.com/ascend/cann/latest/
+enabled=1
+gpgcheck=0
+EOF</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤4：安装NPU驱动 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-title">安装 NPU 驱动</span>
+                        </div>
+                        <p class="step-desc">安装 Ascend 芯片的 NPU 驱动程序</p>
+                        <div class="code-block">
+                            <code class="code-text"># 安装 NPU 驱动
+sudo yum install -y ascend-driver</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤5：安装Toolkit -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">5</span>
+                            <span class="step-title">安装 Toolkit</span>
+                        </div>
+                        <p class="step-desc">安装 CANN Toolkit 开发套件</p>
+                        <div class="code-block">
+                            <code class="code-text"># 安装 CANN Toolkit
+sudo yum install -y ascend-cann-toolkit
+
+# 配置环境变量
+source /usr/local/Ascend/ascend-toolkit/set_env.sh</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤6：安装后验证 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">6</span>
+                            <span class="step-title">安装后验证</span>
+                        </div>
+                        <p class="step-desc">验证 CANN 安装是否成功</p>
+                        <div class="code-block">
+                            <code class="code-text"># 检查驱动版本
+npu-smi info
+
+# 检查 Toolkit 版本
+atc --version
+
+# 运行示例程序验证
+cd /usr/local/Ascend/ascend-toolkit/latest/samples
+python3 sample_resnet.py</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conda安装内容 -->
+            <div class="guide-content" id="conda-guide" style="display: none;">
+                <!-- 环境要求 -->
+                <div class="requirement-card">
+                    <span class="requirement-icon">📋</span>
+                    <div class="requirement-info">
+                        <span class="requirement-label">环境要求</span>
+                        <p class="requirement-desc">需已安装 Anaconda/Miniconda，建议创建独立环境</p>
+                    </div>
+                </div>
+
+                <!-- 安装步骤 -->
+                <div class="steps-container">
+                    <!-- Python版本要求提示 -->
+                    <div class="step-note" style="background: rgba(255, 152, 0, 0.1); border-left: 3px solid #ff9800; padding: 12px 16px; margin-bottom: 16px; border-radius: 4px;">
+                        <span class="note-icon">⚠️</span>
+                        <span class="note-text" style="color: var(--text-primary); font-size: 13px;"><strong>Python版本要求：</strong>CANN社区版支持的Python版本为3.7-3.10，推荐使用Python 3.8以获得最佳兼容性。</span>
+                    </div>
+
+                    <!-- 步骤1：创建指定Python版本的Conda环境 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">创建指定Python版本的Conda环境</span>
+                        </div>
+                        <p class="step-desc">创建独立的Conda环境，指定Python版本以便兼容CANN</p>
+                        <div class="code-block">
+                            <code class="code-text"># 创建Conda环境（Python 3.8）
+conda create -n ascend python=3.8 -y
+
+# 激活环境
+conda activate ascend</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤2：配置Conda Channel -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">配置Conda Channel</span>
+                        </div>
+                        <p class="step-desc">添加CANN官方Conda源并配置channel优先级</p>
+                        <div class="code-block">
+                            <code class="code-text"># 添加Ascend conda源
+conda config --add channels https://repo.huawei.com/ascend/conda
+
+# 设置channel优先级
+conda config --set channel_priority strict</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤3：安装Toolkit -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">安装Toolkit</span>
+                        </div>
+                        <p class="step-desc">安装CANN Toolkit开发套件</p>
+                        <div class="code-block">
+                            <code class="code-text"># 安装CANN Toolkit
+conda install -y ascend-cann-toolkit</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤4：配置环境变量 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-title">配置环境变量</span>
+                        </div>
+                        <p class="step-desc">配置CANN环境变量，使其在终端中可用</p>
+                        <div class="code-block">
+                            <code class="code-text"># 配置环境变量
+source /usr/local/Ascend/ascend-toolkit/set_env.sh
+
+# 验证安装
+atc --version</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 离线安装内容 -->
+            <div class="guide-content" id="offline-guide" style="display: none;">
+                <!-- 环境要求 -->
+                <div class="requirement-card">
+                    <span class="requirement-icon">📋</span>
+                    <div class="requirement-info">
+                        <span class="requirement-label">环境要求</span>
+                        <p class="requirement-desc">适用于无法联网的环境，需提前下载安装包和依赖</p>
+                    </div>
+                </div>
+
+                <!-- 安装步骤 -->
+                <div class="steps-container">
+                    <!-- 步骤1：配置用户属组 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">配置用户属组</span>
+                        </div>
+                        <p class="step-desc">创建CANN运行所需的用户和用户组</p>
+                        <div class="code-block">
+                            <code class="code-text"># 创建用户组
+sudo groupadd HwHiAiUser
+
+# 创建用户并加入用户组
+sudo useradd -g HwHiAiUser -d /home/HwHiAiUser -m HwHiAiUser
+
+# 设置用户密码
+sudo passwd HwHiAiUser</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤2：安装依赖 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">安装依赖</span>
+                        </div>
+                        <p class="step-desc">安装CANN运行所需的依赖包</p>
+                        <div class="code-block">
+                            <code class="code-text"># 安装基础依赖包
+sudo yum install -y wget gcc gcc-c++ make cmake unzip
+
+# 安装Python依赖（如果使用Python API）
+sudo yum install -y python3 python3-pip</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤3：安装CANN（驱动+Toolkit） -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">安装CANN（驱动+Toolkit）</span>
+                        </div>
+                        <p class="step-desc">解压并执行离线安装包</p>
+                        <div class="code-block">
+                            <code class="code-text"># 解压安装包
+tar -zxvf CANN_8.0.RC3_linux-x86_64.run -C /tmp
+
+# 安装驱动
+sudo bash /tmp/CANN_8.0.RC3_linux-x86_64.run --install-driver
+
+# 安装Toolkit
+sudo bash /tmp/CANN_8.0.RC3_linux-x86_64.run --install-toolkit
+
+# 配置环境变量
+source /usr/local/Ascend/ascend-toolkit/set_env.sh</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <!-- 步骤4：安装后验证 -->
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-title">安装后验证</span>
+                        </div>
+                        <p class="step-desc">验证CANN安装是否成功</p>
+                        <div class="code-block">
+                            <code class="code-text"># 检查驱动版本
+npu-smi info
+
+# 检查Toolkit版本
+atc --version
+
+# 运行示例程序验证
+cd /usr/local/Ascend/ascend-toolkit/latest/samples
+python3 sample_resnet.py</code>
+                            <button class="copy-btn" onclick="copyCodeBlock(this)">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </div>
+
+        <!-- 安装文档页面 -->
+        <div id="docs-page" class="page-section">
+            <div class="docs-container">
+                <div class="docs-header">
+                    <h1>CANN 安装指南</h1>
+                    <p>本文档详细介绍了如何在不同操作系统和硬件平台上安装和配置CANN。</p>
+                </div>
+
+                <div class="docs-wrapper">
+                    <div class="docs-sidebar">
+                        <nav class="docs-nav">
+                            <a href="#doc-overview" class="nav-item active">概述</a>
+                            <a href="#doc-prerequisites" class="nav-item">安装前提</a>
+                            <a href="#doc-installation" class="nav-item">安装步骤</a>
+                            <a href="#doc-configuration" class="nav-item">配置说明</a>
+                            <a href="#doc-verification" class="nav-item">安装验证</a>
+                            <a href="#doc-troubleshooting" class="nav-item">常见问题</a>
+                        </nav>
+                    </div>
+
+                    <div class="docs-content">
+                        <article id="doc-overview" class="doc-section active">
+                            <h2>概述</h2>
+                            <p>CANN（Compute Architecture for Neural Networks）是华为公司自主研发的AI异构计算架构，为深度学习训练和推理提供强大的计算能力支持。</p>
+                            <h3>主要特性</h3>
+                            <ul>
+                                <li>支持多种深度学习框架（TensorFlow、PyTorch、MindSpore等）</li>
+                                <li>高效的算子优化和并行计算能力</li>
+                                <li>完善的工具链支持，包括编译器、调试器、性能分析工具</li>
+                                <li>支持多种硬件平台和操作系统</li>
+                            </ul>
+                            <h3>产品架构</h3>
+                            <p>CANN主要包含以下核心组件：</p>
+                            <ul>
+                                <li><strong>NPU驱动</strong>：负责与硬件设备通信，提供基础计算能力</li>
+                                <li><strong>Toolkit</strong>：包含算子库、编译器、运行时等核心组件</li>
+                                <li><strong>Framework Adapter</strong>：提供与主流深度学习框架的接口适配</li>
+                                <li><strong>运行时库</strong>：提供模型推理和训练的运行时环境</li>
+                            </ul>
+                            <h3>版本选择</h3>
+                            <table>
+                                <thead>
+                                    <tr><th>版本</th><th>发布时间</th><th>说明</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>9.0.0</td><td>2024年Q2</td><td>最新版本，支持更多硬件和优化</td></tr>
+                                    <tr><td>8.0.RC3</td><td>2024年Q1</td><td>LTS版本，稳定性高，推荐生产环境使用</td></tr>
+                                    <tr><td>7.0.RC1</td><td>2023年Q4</td><td>稳定版本，已大规模部署验证</td></tr>
+                                </tbody>
+                            </table>
+                        </article>
+
+                        <article id="doc-prerequisites" class="doc-section">
+                            <h2>安装前提</h2>
+                            <h3>硬件要求</h3>
+                            <table>
+                                <thead>
+                                    <tr><th>硬件类型</th><th>最低要求</th><th>推荐配置</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>CPU</td><td>Intel Xeon E5-26xx v4 或更高</td><td>Intel Xeon Platinum 82xx 系列</td></tr>
+                                    <tr><td>内存</td><td>32GB</td><td>64GB 或更高</td></tr>
+                                    <tr><td>存储</td><td>100GB 可用空间</td><td>200GB SSD</td></tr>
+                                    <tr><td>NPU</td><td>昇腾310/310P/910/910B</td><td>昇腾910B</td></tr>
+                                </tbody>
+                            </table>
+                            <h3>软件要求</h3>
+                            <table>
+                                <thead>
+                                    <tr><th>操作系统</th><th>支持版本</th><th>CPU架构</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>openEuler</td><td>20.03 LTS / 22.03 LTS / 23.03</td><td>x86_64 / ARM</td></tr>
+                                    <tr><td>Ubuntu</td><td>18.04 LTS / 20.04 LTS / 22.04 LTS</td><td>x86_64</td></tr>
+                                    <tr><td>CentOS</td><td>7.6 / 7.9 / 8.2</td><td>x86_64</td></tr>
+                                    <tr><td>Kylin</td><td>V10 / V10 SP1</td><td>ARM</td></tr>
+                                </tbody>
+                            </table>
+                            <h3>网络要求</h3>
+                            <ul>
+                                <li>能够访问华为昇腾软件源：https://ascend-repo.huawei.com</li>
+                                <li>或准备离线安装包：从官网下载对应版本的完整安装包</li>
+                                <li>安装过程中需要下载约 2-5GB 的软件包</li>
+                            </ul>
+                        </article>
+
+                        <article id="doc-installation" class="doc-section">
+                            <h2>安装步骤</h2>
+                            <h3>准备工作</h3>
+                            <ol>
+                                <li>检查系统版本：<code>cat /etc/os-release</code></li>
+                                <li>检查CPU架构：<code>uname -m</code></li>
+                                <li>检查内存：<code>free -h</code></li>
+                                <li>检查磁盘空间：<code>df -h</code></li>
+                            </ol>
+                            <h3>在线安装（Yum方式）</h3>
+                            <pre><code># 1. 安装依赖包
+yum install -y shadow-utils wget curl
+
+# 2. 创建用户组和用户
+groupadd ascend && useradd -g ascend ascend
+usermod -aG wheel ascend
+
+# 3. 配置CANN软件源
+wget https://ascend-repo.huawei.com/CANN/8.0.RC3/CANN-community.repo -O /etc/yum.repos.d/CANN-community.repo
+
+# 4. 安装NPU驱动
+yum install -y ascend-driver
+systemctl start ascend-driver
+
+# 5. 安装Toolkit
+yum install -y cann-toolkit
+
+# 6. 加载环境变量
+source /usr/local/Ascend/ascend-toolkit/set_env.sh
+
+# 7. 验证安装
+ascend-dmi</code></pre>
+                            <h3>离线安装（推荐内网环境）</h3>
+                            <pre><code># 1. 下载离线安装包
+# 访问 https://www.huaweicloud.com/intl/zh-cn/ascend/download.html
+# 下载对应版本的离线包：Ascend-cann-toolkit_8.0.RC3_linux-x86_64.run
+
+# 2. 上传并解压
+chmod +x Ascend-cann-toolkit_8.0.RC3_linux-x86_64.run
+./Ascend-cann-toolkit_8.0.RC3_linux-x86_64.run --extract=/tmp/cann_install
+
+# 3. 运行安装脚本
+cd /tmp/cann_install
+./install.sh --install-path=/usr/local/Ascend
+
+# 4. 加载环境变量
+source /usr/local/Ascend/ascend-toolkit/set_env.sh</code></pre>
+                        </article>
+
+                        <article id="doc-configuration" class="doc-section">
+                            <h2>配置说明</h2>
+                            <h3>环境变量配置</h3>
+                            <pre><code># CANN环境变量
+export ASCEND_HOME=/usr/local/Ascend
+export PATH=$ASCEND_HOME/ascend-toolkit/latest/bin:$PATH
+export LD_LIBRARY_PATH=$ASCEND_HOME/ascend-toolkit/latest/lib64:$LD_LIBRARY_PATH
+export PYTHONPATH=$ASCEND_HOME/ascend-toolkit/latest/python/site-packages:$PYTHONPATH</code></pre>
+                            <p>建议将以上配置添加到 <code>~/.bashrc</code> 或 <code>/etc/profile</code> 中，以便每次登录时自动加载。</p>
+                            <h3>用户权限配置</h3>
+                            <pre><code># 将用户添加到video组
+usermod -aG video username
+
+# 将用户添加到ascend组  
+usermod -aG ascend username
+
+# 验证组设置
+groups username</code></pre>
+                            <h3>服务配置</h3>
+                            <pre><code># 设置开机自启
+systemctl enable ascend-driver
+systemctl enable cann-smi
+
+# 查看服务状态
+systemctl status ascend-driver
+systemctl status cann-smi</code></pre>
+                        </article>
+
+                        <article id="doc-verification" class="doc-section">
+                            <h2>安装验证</h2>
+                            <h3>驱动验证</h3>
+                            <pre><code># 查看驱动版本
+npu-smi info
+
+# 查看设备状态
+ascend-dmi
+
+# 查看NPU使用率
+npu-smi info -t usage</code></pre>
+                            <p>正常情况下，您应该能看到NPU设备列表，包括设备ID、型号、温度、功耗等信息。</p>
+                            <h3>Toolkit验证</h3>
+                            <pre><code># 检查环境变量
+echo $ASCEND_HOME
+
+# 检查Python接口
+python3 -c "import ascend; print(ascend.__version__)"
+
+# 运行示例程序
+cd /usr/local/Ascend/ascend-toolkit/latest/samples/operator
+python3 run_add_sample.py</code></pre>
+                            <h3>模型验证</h3>
+                            <pre><code># 下载测试模型
+wget https://modelzoo.huawei.com/models/resnet50/resnet50.caffemodel -O resnet50.caffemodel
+
+# 转换模型
+atc --model=resnet50.prototxt --weight=resnet50.caffemodel \
+    --framework=0 --output=resnet50 --soc_version=Ascend310
+
+# 运行推理
+./msame --model resnet50.om --input /path/to/input --output /path/to/output</code></pre>
+                        </article>
+
+                        <article id="doc-troubleshooting" class="doc-section">
+                            <h2>常见问题</h2>
+                            <h3>安装失败</h3>
+                            <dl>
+                                <dt>问题：依赖包冲突</dt>
+                                <dd>解决方案：使用<code>yum update</code>更新系统后重试，或使用离线安装方式。</dd>
+                                <dt>问题：网络连接失败</dt>
+                                <dd>解决方案：检查网络连接，配置代理服务器，或使用离线安装包。</dd>
+                                <dt>问题：磁盘空间不足</dt>
+                                <dd>解决方案：清理磁盘空间，确保<code>/usr/local</code>目录有至少10GB可用空间。</dd>
+                                <dt>问题：权限不足</dt>
+                                <dd>解决方案：使用<code>sudo</code>或以root用户运行安装命令。</dd>
+                            </dl>
+                            <h3>运行时错误</h3>
+                            <dl>
+                                <dt>问题：设备权限不足</dt>
+                                <dd>解决方案：将用户添加到video组和ascend组，重新登录后重试。</dd>
+                                <dt>问题：环境变量未配置</dt>
+                                <dd>解决方案：执行<code>source /usr/local/Ascend/ascend-toolkit/set_env.sh</code>。</dd>
+                                <dt>问题：设备忙</dt>
+                                <dd>解决方案：使用<code>fuser /dev/davinci0</code>查看占用进程，或重启系统。</dd>
+                                <dt>问题：模型转换失败</dt>
+                                <dd>解决方案：检查输入数据格式、算子兼容性，或参考官方文档调整转换参数。</dd>
+                            </dl>
+                            <h3>性能问题</h3>
+                            <dl>
+                                <dt>问题：推理速度慢</dt>
+                                <dd>解决方案：检查输入数据预处理是否优化，开启算子融合，使用batch推理。</dd>
+                                <dt>问题：内存不足</dt>
+                                <dd>解决方案：减小batch size，或使用内存优化的模型版本。</dd>
+                            </dl>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 镜像中心页面 -->
+        <div id="hub-page" class="page-section">
+            <div class="hub-header">
+                <div class="hub-title-wrapper">
+                    <span class="hub-icon">🐳</span>
+                    <h3 class="hub-title">Ascend Hub镜像中心</h3>
+                    <span class="hub-badge">体验重构</span>
+                </div>
+                <p class="hub-desc">清晰的分类导航，完整的镜像列表，一键获取</p>
+            </div>
+
+            <div class="hub-content">
+                <!-- 左侧导航 -->
+                <div class="hub-sidebar">
+                    <nav class="hub-nav">
+                        <button class="nav-item active" data-category="all">
+                            <span class="nav-icon">📦</span>
+                            <span>全部镜像</span>
+                            <span class="nav-count" id="count-all">8</span>
+                        </button>
+                        <button class="nav-item" data-category="toolkit">
+                            <span class="nav-icon">🔧</span>
+                            <span>Toolkit</span>
+                            <span class="nav-count" id="count-toolkit">2</span>
+                        </button>
+                        <button class="nav-item" data-category="runtime">
+                            <span class="nav-icon">⚡</span>
+                            <span>运行时</span>
+                            <span class="nav-count" id="count-runtime">2</span>
+                        </button>
+                        <button class="nav-item" data-category="framework">
+                            <span class="nav-icon">🧠</span>
+                            <span>框架镜像</span>
+                            <span class="nav-count" id="count-framework">3</span>
+                        </button>
+                        <button class="nav-item" data-category="dev">
+                            <span class="nav-icon">💻</span>
+                            <span>开发环境</span>
+                            <span class="nav-count" id="count-dev">1</span>
+                        </button>
+                        <div class="nav-divider"></div>
+                        <button class="nav-item" data-action="download">
+                            <span class="nav-icon">📥</span>
+                            <span>镜像下载</span>
+                            <span class="nav-new">新</span>
+                        </button>
+                        <button class="nav-item" data-action="guide">
+                            <span class="nav-icon">📖</span>
+                            <span>部署指南</span>
+                            <span class="nav-new">新</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- 右侧镜像列表 -->
+                <div class="hub-main">
+                    <div class="hub-toolbar">
+                        <h4 class="hub-list-title">Docker镜像列表</h4>
+                        <div class="hub-filters">
+                            <select class="filter-select" id="arch-filter">
+                                <option value="all">全部架构</option>
+                                <option value="x86_64">x86_64</option>
+                                <option value="aarch64">aarch64</option>
+                            </select>
+                            <select class="filter-select" id="version-filter">
+                                <option value="all">全部版本</option>
+                                <option value="9.0.0">9.0.0</option>
+                                <option value="8.0.RC3">8.0.RC3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="hub-images" id="hub-images">
+                        <!-- 镜像项1 -->
+                        <div class="image-card" data-category="toolkit" data-arch="x86_64,aarch64" data-version="9.0.0" data-name="ascend-toolkit" data-size="1.8GB" data-os="Ubuntu 22.04">
+                            <div class="image-icon">🔧</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-toolkit</span>
+                                <span class="image-meta">9.0.0 · x86_64/aarch64 · Ubuntu 22.04 · 1.8GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <span class="image-tag latest">最新</span>
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+
+                        <!-- 镜像项2 -->
+                        <div class="image-card" data-category="runtime" data-arch="x86_64,aarch64" data-version="9.0.0" data-name="ascend-runtime" data-size="1.2GB" data-os="Ubuntu 22.04">
+                            <div class="image-icon">⚡</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-runtime</span>
+                                <span class="image-meta">9.0.0 · x86_64/aarch64 · Ubuntu 22.04 · 1.2GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <span class="image-tag latest">最新</span>
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+
+                        <!-- 镜像项3 -->
+                        <div class="image-card" data-category="framework" data-arch="x86_64,aarch64" data-version="9.0.0" data-name="ascend-mindspore" data-size="3.2GB" data-os="Ubuntu 22.04">
+                            <div class="image-icon">🧠</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-mindspore</span>
+                                <span class="image-meta">9.0.0 · x86_64/aarch64 · Ubuntu 22.04 · 3.2GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+
+                        <!-- 镜像项4 -->
+                        <div class="image-card" data-category="framework" data-arch="x86_64,aarch64" data-version="9.0.0" data-name="ascend-pytorch" data-size="4.1GB" data-os="Ubuntu 22.04">
+                            <div class="image-icon">🧠</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-pytorch</span>
+                                <span class="image-meta">9.0.0 · x86_64/aarch64 · Ubuntu 22.04 · 4.1GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+
+                        <!-- 镜像项5 -->
+                        <div class="image-card" data-category="dev" data-arch="x86_64,aarch64" data-version="9.0.0" data-name="ascend-dev-jupyter" data-size="5.6GB" data-os="Ubuntu 22.04">
+                            <div class="image-icon">💻</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-dev-jupyter</span>
+                                <span class="image-meta">9.0.0 · x86_64/aarch64 · Ubuntu 22.04 · 5.6GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <span class="image-tag dev">开发</span>
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+
+                        <!-- 镜像项6 -->
+                        <div class="image-card" data-category="toolkit" data-arch="x86_64,aarch64" data-version="8.0.RC3" data-name="ascend-toolkit" data-size="1.6GB" data-os="Ubuntu 20.04">
+                            <div class="image-icon">🔧</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-toolkit</span>
+                                <span class="image-meta">8.0.RC3 · x86_64/aarch64 · Ubuntu 20.04 · 1.6GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <span class="image-tag lts">LTS</span>
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+
+                        <!-- 镜像项7 -->
+                        <div class="image-card" data-category="runtime" data-arch="x86_64,aarch64" data-version="8.0.RC3" data-name="ascend-runtime" data-size="1.0GB" data-os="Ubuntu 20.04">
+                            <div class="image-icon">⚡</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-runtime</span>
+                                <span class="image-meta">8.0.RC3 · x86_64/aarch64 · Ubuntu 20.04 · 1.0GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <span class="image-tag lts">LTS</span>
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+
+                        <!-- 镜像项8 -->
+                        <div class="image-card" data-category="framework" data-arch="x86_64,aarch64" data-version="8.0.RC3" data-name="ascend-mindspore" data-size="2.8GB" data-os="Ubuntu 20.04">
+                            <div class="image-icon">🧠</div>
+                            <div class="image-info">
+                                <span class="image-name">ascend-mindspore</span>
+                                <span class="image-meta">8.0.RC3 · x86_64/aarch64 · Ubuntu 20.04 · 2.8GB</span>
+                            </div>
+                            <div class="image-actions">
+                                <span class="image-tag lts">LTS</span>
+                                <button class="image-btn" onclick="showImageModal(this)">获取</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 镜像详情模态框 -->
+    <div class="modal-overlay" id="image-modal" onclick="closeImageModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title-wrapper">
+                    <span class="modal-icon" id="modal-icon">🔧</span>
+                    <div class="modal-title-info">
+                        <h3 class="modal-title" id="modal-title">ascend-toolkit</h3>
+                        <p class="modal-subtitle" id="modal-subtitle">9.0.0 · x86_64/aarch64 · Ubuntu 22.04</p>
+                    </div>
+                    <span class="modal-tag" id="modal-tag">最新</span>
+                </div>
+                <button class="modal-close" onclick="closeImageModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4 class="modal-section-title">镜像信息</h4>
+                    <div class="modal-info-grid">
+                        <div class="info-item">
+                            <span class="info-label">镜像名称</span>
+                            <span class="info-value" id="modal-name">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">版本</span>
+                            <span class="info-value" id="modal-version">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">系统架构</span>
+                            <span class="info-value" id="modal-arch">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">操作系统</span>
+                            <span class="info-value" id="modal-os">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">镜像大小</span>
+                            <span class="info-value" id="modal-size">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">分类</span>
+                            <span class="info-value" id="modal-category">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h4 class="modal-section-title">拉取命令</h4>
+                    <div class="modal-code-block">
+                        <code id="modal-pull-cmd">docker pull ascendhub.huawei.com/public-ascendhub/ascend-toolkit:9.0.0-ubuntu22.04</code>
+                        <button class="copy-btn" onclick="copyModalCode('pull')">复制</button>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h4 class="modal-section-title">运行命令</h4>
+                    <div class="modal-code-block">
+                        <code id="modal-run-cmd">docker run -it --rm --device=/dev/davinci0 ascendhub.huawei.com/public-ascendhub/ascend-toolkit:9.0.0-ubuntu22.04 bash</code>
+                        <button class="copy-btn" onclick="copyModalCode('run')">复制</button>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h4 class="modal-section-title">使用说明</h4>
+                    <ul class="modal-tips">
+                        <li>请确保已正确安装并配置 Docker 环境</li>
+                        <li>运行镜像需要昇腾硬件设备支持</li>
+                        <li>首次拉取镜像可能需要较长时间，请耐心等待</li>
+                        <li>建议使用 Docker 19.03 及以上版本</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeImageModal()">关闭</button>
+                <button class="btn-primary" onclick="copyAllCommands()">复制所有命令</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 镜像下载模态框 -->
+    <div class="modal-overlay" id="download-modal" onclick="closeDownloadModal(event)">
+        <div class="modal modal-large" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title-wrapper">
+                    <span class="modal-icon">📥</span>
+                    <div class="modal-title-info">
+                        <h3 class="modal-title">镜像下载</h3>
+                        <p class="modal-subtitle">选择您需要的镜像类型和下载方式</p>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeDownloadModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="download-tabs">
+                    <button class="tab-btn active" data-tab="docker">Docker Pull</button>
+                    <button class="tab-btn" data-tab="tar">镜像文件</button>
+                    <button class="tab-btn" data-tab="quick">快速脚本</button>
+                </div>
+
+                <!-- Docker Pull 标签页 -->
+                <div class="tab-content active" data-tab="docker">
+                    <div class="info-block">
+                        <div class="info-block-title">基础镜像</div>
+                        <div class="code-block-group">
+                            <div class="modal-code-block">
+                                <code>docker pull ascendhub.huawei.com/public-ascendhub/ascend-toolkit:9.0.0-ubuntu22.04</code>
+                                <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                            </div>
+                            <div class="modal-code-block">
+                                <code>docker pull ascendhub.huawei.com/public-ascendhub/ascend-runtime:9.0.0-ubuntu22.04</code>
+                                <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                            </div>
+                            <div class="modal-code-block">
+                                <code>docker pull ascendhub.huawei.com/public-ascendhub/ascend-toolkit:8.0.RC3-ubuntu20.04</code>
+                                <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <div class="info-block-title">框架镜像</div>
+                        <div class="code-block-group">
+                            <div class="modal-code-block">
+                                <code>docker pull ascendhub.huawei.com/public-ascendhub/ascend-mindspore:9.0.0-ubuntu22.04</code>
+                                <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                            </div>
+                            <div class="modal-code-block">
+                                <code>docker pull ascendhub.huawei.com/public-ascendhub/ascend-pytorch:9.0.0-ubuntu22.04</code>
+                                <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <div class="info-block-title">开发环境镜像</div>
+                        <div class="code-block-group">
+                            <div class="modal-code-block">
+                                <code>docker pull ascendhub.huawei.com/public-ascendhub/ascend-dev-jupyter:9.0.0-ubuntu22.04</code>
+                                <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 镜像文件（tar）标签页 -->
+                <div class="tab-content" data-tab="tar">
+                    <div class="download-table-wrapper">
+                        <table class="download-table">
+                            <thead>
+                                <tr>
+                                    <th>镜像名称</th>
+                                    <th>版本</th>
+                                    <th>架构</th>
+                                    <th>大小</th>
+                                    <th>下载链接</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ascend-toolkit</td>
+                                    <td>9.0.0</td>
+                                    <td>x86_64</td>
+                                    <td>1.8 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-toolkit-9.0.0-x86_64.tar')">⬇ 下载</a></td>
+                                </tr>
+                                <tr>
+                                    <td>ascend-toolkit</td>
+                                    <td>9.0.0</td>
+                                    <td>aarch64</td>
+                                    <td>1.7 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-toolkit-9.0.0-aarch64.tar')">⬇ 下载</a></td>
+                                </tr>
+                                <tr>
+                                    <td>ascend-runtime</td>
+                                    <td>9.0.0</td>
+                                    <td>x86_64</td>
+                                    <td>1.2 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-runtime-9.0.0-x86_64.tar')">⬇ 下载</a></td>
+                                </tr>
+                                <tr>
+                                    <td>ascend-runtime</td>
+                                    <td>9.0.0</td>
+                                    <td>aarch64</td>
+                                    <td>1.1 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-runtime-9.0.0-aarch64.tar')">⬇ 下载</a></td>
+                                </tr>
+                                <tr>
+                                    <td>ascend-toolkit</td>
+                                    <td>8.0.RC3</td>
+                                    <td>x86_64</td>
+                                    <td>1.6 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-toolkit-8.0.RC3-x86_64.tar')">⬇ 下载</a></td>
+                                </tr>
+                                <tr>
+                                    <td>ascend-toolkit</td>
+                                    <td>8.0.RC3</td>
+                                    <td>aarch64</td>
+                                    <td>1.5 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-toolkit-8.0.RC3-aarch64.tar')">⬇ 下载</a></td>
+                                </tr>
+                                <tr>
+                                    <td>ascend-mindspore</td>
+                                    <td>9.0.0</td>
+                                    <td>x86_64</td>
+                                    <td>3.2 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-mindspore-9.0.0-x86_64.tar')">⬇ 下载</a></td>
+                                </tr>
+                                <tr>
+                                    <td>ascend-pytorch</td>
+                                    <td>9.0.0</td>
+                                    <td>x86_64</td>
+                                    <td>4.1 GB</td>
+                                    <td><a href="#" class="download-link" onclick="simulateDownload(event, 'ascend-pytorch-9.0.0-x86_64.tar')">⬇ 下载</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 快速脚本标签页 -->
+                <div class="tab-content" data-tab="quick">
+                    <div class="info-block">
+                        <div class="info-block-title">一键拉取全部基础镜像</div>
+                        <div class="modal-code-block">
+                            <code>#!/bin/bash
+# 拉取 CANN 基础镜像集合
+docker pull ascendhub.huawei.com/public-ascendhub/ascend-toolkit:9.0.0-ubuntu22.04
+docker pull ascendhub.huawei.com/public-ascendhub/ascend-runtime:9.0.0-ubuntu22.04
+
+echo "=== 镜像拉取完成 ==="
+docker images | grep ascendhub</code>
+                            <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <div class="info-block-title">导出镜像为 tar 包</div>
+                        <div class="modal-code-block">
+                            <code>#!/bin/bash
+# 保存镜像到本地 tar 文件
+IMAGE_NAME="ascendhub.huawei.com/public-ascendhub/ascend-toolkit:9.0.0-ubuntu22.04"
+TAR_FILE="ascend-toolkit-9.0.0.tar"
+
+docker save -o ${TAR_FILE} ${IMAGE_NAME}
+echo "镜像已保存至: ${TAR_FILE}"
+ls -lh ${TAR_FILE}</code>
+                            <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <div class="info-block-title">从 tar 包载入镜像</div>
+                        <div class="modal-code-block">
+                            <code>#!/bin/bash
+# 从 tar 文件加载镜像
+TAR_FILE="ascend-toolkit-9.0.0.tar"
+
+docker load -i ${TAR_FILE}
+echo "=== 镜像载入完成 ==="
+docker images | grep ascend</code>
+                            <button class="copy-btn" onclick="copyCodeText(this)">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeDownloadModal()">关闭</button>
+                <button class="btn-primary" onclick="switchTab('tar'); showNotification('已切换到镜像文件下载')">查看镜像文件</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>© 2024 华为技术有限公司. 保留所有权利.</p>
+            <p>CANN 8.0.RC3 LTS | 昇腾AI异构计算架构</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
